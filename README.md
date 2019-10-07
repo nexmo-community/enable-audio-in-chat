@@ -19,6 +19,7 @@ Using Nexmo Client SDK, we're going to enable audio to be able to speak to other
 - [Next Steps](#next-steps)
 - [Enable Audio](#enable-audio)
 - [I Don't Want To Run Your Script! (Running The CLI Steps Manually)](#i-dont-want-to-run-your-script-running-the-cli-steps-manually)
+  - [Create Application](#create-application)
   - [Create Conversation](#create-conversation)
   - [Create the First User](#create-the-first-user)
   - [Create the Second User](#create-the-second-user)
@@ -136,10 +137,14 @@ Read my blog post on enabling audio `// needs link to blog post`, or checkout/do
 
 ## I Don't Want To Run Your Script! (Running The CLI Steps Manually)
 
+Here are the steps to create the configuration file manually using our Nexmo CLI.
+
+### Create Application
+
 Run the `app:create` CLI command. Returns an application ID.
 
 ```bash
-nexmo app:create "Nexmo Demo Application" https://example.com/answer https://example.com/event --type=rtc --keyfile=private.key
+nexmo app:create "Nexmo Demo Application" --capabilities=rtc --rtc-event-url=http://example.com --keyfile=private.key
 ```
 
 Add the application ID returned from the command to a local environment variable.
