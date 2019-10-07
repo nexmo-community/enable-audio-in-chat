@@ -1,0 +1,173 @@
+#!/usr/bin/env node
+const inquirer = require('inquirer')
+const { spawnSync, spawn } = require( 'child_process' )
+const nexmo = require('nexmo')
+const fs = require('fs')
+
+class SetupScript {
+  constructor() {
+    this.welcome()
+    this.run = this.run.bind(this)
+  }
+
+  welcome() {
+    this.output('Let\'s set up the Nexmo demo app')
+  }
+
+  run() {
+    const questions = [
+      {
+        type: 'input',
+        name: 'applicationName',
+        message: 'What will you call the application?',
+        default: 'Nexmo Demo App'
+      },
+      {
+        type: 'input',
+        name: 'conversationName',
+        message: 'What will you call the conversation?',
+        default: 'Demo Conversation'
+      },
+      {
+        type: 'input',
+        name: 'user1',
+        message: 'What will you call the first user?',
+        default: 'luke'
+      },
+      {
+        type: 'input',
+        name: 'user2',
+        message: 'What will you call the second user?',
+        default: 'alex'
+      }
+    ]
+
+    inquirer.prompt(questions).then((answers) => {
+      this.output(`Setting up ${answers.applicationName} application...`)
+      const applicationId = this.createApplication(answers.applicationName)
+      const conversationId = this.createConversation(answers.conversationName)
+      const user1 = this.createUserObject(answers.user1, conversationId, applicationId)
+      const user2 = this.createUserObject(answers.user2, conversationId, applicationId)
+      this.createConfig(conversationId, user1, user2)
+
+      console.log('----------------------------------------------------------------------------')
+      console.log('Set up complete.')
+      console.log('Config file: config.js')
+      console.log(`Application: ${applicationId}`)
+      console.log(`Conversation: ${conversationId}`)
+      console.log('User 1:', user1)
+      console.log('User 2:', user2)
+    })
+  }
+
+  createApplication(applicationName) {
+    const output = this.syncProcess('nexmo', [
+      'app:create',
+      applicationName,
+      'https://example.com/answer',
+      'https://example.com/event',
+      '--type=rtc',
+      '--keyfile=private.key'
+    ])
+
+    const [, applicationId] = output.stdout.toString().match(/(?:Application created: )(.*)/)
+
+    return applicationId
+  }
+
+  createConversation(conversationName) {
+    const output = this.syncProcess('nexmo', [
+      'conversation:create',
+      `display_name="${conversationName}"`
+    ])
+
+    const [, conversationId] = output.stdout.toString().match(/(?:Conversation created: )(.*)/)
+
+    return conversationId
+  }
+
+  createUserObject(username, conversationId, applicationId) {
+    const userOutput = this.syncProcess('nexmo', [
+      'user:create',
+      `name="${username}"`
+    ])
+
+    const [, userId] = userOutput.stdout.toString().match(/(?:User created: )(.*)/)
+
+    const channel = {
+      type:"app"
+    }
+
+    const joinOutput = this.syncProcess('nexmo', [
+      'member:add',
+      conversationId,
+      'action=join',
+      `channel=${JSON.stringify(channel)}`,
+      `user_id=${userId}`
+    ])
+
+    const [, memId] = joinOutput.stdout.toString().match(/(?:Member added: )(.*)/)
+
+    const acl = {
+      paths: {
+        "/*/users/**": {},
+        "/*/conversations/**": {},
+        "/*/sessions/**":{},
+        "/*/devices/**":{},
+        "/*/image/**":{},
+        "/*/media/**":{},
+        "/*/applications/**":{},
+        "/*/push/**":{},
+        "/*/knocking/**":{}
+      }
+    }
+
+    const jwt = nexmo.generateJwt(fs.readFileSync('./private.key'), {
+      application_id: applicationId,
+      sub: username,
+      exp: Math.round(new Date().getTime()/1000)+86400,
+      acl: acl
+    })
+
+    return {
+      username: username,
+      userId: userId,
+      memId: memId,
+      jwt: jwt
+    }
+  }
+
+  createConfig(conversationId, user1, user2) {
+    const data = `const USERS = {
+  ${user1.username}: '${user1.jwt}',
+  ${user2.username}: '${user2.jwt}',
+}
+
+const CONVERSATION_ID = '${conversationId}'`
+
+    fs.writeFile('config.js', data, (err, data) => {
+        if (err) console.log(err)
+    })
+  }
+
+  syncProcess(process, args) {
+    try {
+      const ps = spawnSync(process, args)
+
+      return ps
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
+  asyncProcess(process, args) {
+    return spawn(process, args)
+  }
+
+  output(text) {
+    console.log(text)
+  }
+}
+
+script = new SetupScript()
+script.run()

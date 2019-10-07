@@ -62,3 +62,8 @@ typings/
 
 # storage
 store/
+
+# app specific
+config.js
+.nexmo-app
+private.key

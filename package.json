@@ -1,0 +1,17 @@
+{
+  "name": "my-nexmo-demo-app",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "http-server": "^0.11.1",
+    "inquirer": "^6.2.1",
+    "nexmo": "^2.4.0"
+  },
+  "scripts": {
+    "start": "http-server",
+    "setup-script": "./bin/setup-script"
+  },
+  "dependencies": {
+    "nexmo-client": "^6.0.1"
+  }
+}

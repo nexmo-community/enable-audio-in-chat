@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="chat.css">
+</head>
+
+<body>
+  <form class="form-signin text-center" id="login">
+    <img class="mb-4" src="http://www.freelogovectors.net/wp-content/uploads/2018/05/nexmo-logo.png" alt="" width="166" height="30">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="" name="username" class="form-control mb-3" placeholder="Username" required autofocus>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginButton">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+  </form>
+  
+  <section id="messages">
+    <!-- <div>
+      <audio id="audio">
+        <source>
+      </audio>
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-secondary">
+          <input type="checkbox" autocomplete="off" id="audioToggle"> <span id="audioToggleText">Enable Audio</span>
+        </label>
+      </div>
+    </div> -->
+    <h1>Messages</h1>
+    <div id="messageFeed"></div>
+    
+    <textarea id="messageTextarea"></textarea>
+    <br>
+    <button id="send">Send</button>
+  </section>
+
+  <script src="config.js"></script>
+  <script src="chat.js"></script>
+  <script src="./node_modules/nexmo-client/dist/nexmoClient.js"></script>
+</body>
+
+</html>
