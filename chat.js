@@ -6,6 +6,7 @@ class ChatApp {
     this.loginButton = document.getElementById('loginButton')
     this.messages = document.getElementById('messages')
     this.messageFeed = document.getElementById('messageFeed')
+    // audio-elements
     this.setupUserEvents()
   }
 
@@ -67,6 +68,8 @@ class ChatApp {
       this.messageFeed.innerHTML = text + this.messageFeed.innerHTML
     })
 
+    // audio-toggle-event
+
     this.showConversationHistory(conversation)
   }
 
@@ -102,6 +105,8 @@ class ChatApp {
         alert('user not found')
       }
     })
+
+    // audio-click-event
   }
 
   authenticate(username) {
