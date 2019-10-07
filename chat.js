@@ -6,9 +6,6 @@ class ChatApp {
     this.loginButton = document.getElementById('loginButton')
     this.messages = document.getElementById('messages')
     this.messageFeed = document.getElementById('messageFeed')
-    // this.audio = document.getElementById('audio')
-    // this.audioToggle = document.getElementById('audioToggle')
-    // this.audioToggleText = document.getElementById('audioToggleText')
     this.setupUserEvents()
   }
 
@@ -70,12 +67,6 @@ class ChatApp {
       this.messageFeed.innerHTML = text + this.messageFeed.innerHTML
     })
 
-    // conversation.on("member:media", (member, event) => {
-    //   console.log(`*** Member changed media state`, member, event)
-    //   const text = `${member.user.name} <b>${event.body.audio ? 'enabled' : 'disabled'} audio in the conversation</b><br>`
-    //   this.messageFeed.innerHTML = text + this.messageFeed.innerHTML
-    // })
-
     this.showConversationHistory(conversation)
   }
 
@@ -111,37 +102,6 @@ class ChatApp {
         alert('user not found')
       }
     })
-
-    // this.audioToggle.addEventListener('click', () => {
-    //   const buttonContainer = this.audioToggle.parentNode
-    //   if (this.audioToggle.checked) {
-    //     this.audioToggleText.innerHTML = 'Disable Audio'
-    //     buttonContainer.classList.add('btn-danger')
-    //     buttonContainer.classList.add('active')
-    //     buttonContainer.classList.remove('btn-secondary')
-    //     this.conversation.media.enable().then(stream => {
-    //       // Older browsers may not have srcObject
-    //       if ("srcObject" in this.audio) {
-    //         this.audio.srcObject = stream
-    //       } else {
-    //         // Avoid using this in new browsers, as it is going away.
-    //         this.audio.src = window.URL.createObjectURL(stream)
-    //       }
-
-    //       this.audio.onloadedmetadata = () => {
-    //         this.audio.play()
-    //       }
-
-    //       this.eventLogger('member:media')()
-    //     }).catch(this.errorLogger)
-    //   } else {
-    //     this.audioToggleText.innerHTML = 'Enable Audio'
-    //     buttonContainer.classList.remove('btn-danger')
-    //     buttonContainer.classList.remove('active')
-    //     buttonContainer.classList.add('btn-secondary')
-    //     this.conversation.media.disable().then(this.eventLogger('member:media')).catch(this.errorLogger)
-    //   }
-    // })
   }
 
   authenticate(username) {
