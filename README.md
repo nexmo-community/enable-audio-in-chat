@@ -132,7 +132,7 @@ Now, you can login as your two created users.
 
 ## Enable Audio
 
-Read my blog post on enabling audio `// needs link to blog post`, or checkout/download [enable-audio](https://github.com/lukeoliff/nexmo-conversation/tree/enable-audio) branch on this repository.
+Read my blog post on enabling audio `// needs link to blog post`, or checkout/download `enable-audio` branch on this repository.
 
 ## I Don't Want To Run Your Script! (Running The CLI Steps Manually)
 
