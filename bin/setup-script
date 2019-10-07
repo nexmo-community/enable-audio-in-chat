@@ -64,9 +64,8 @@ class SetupScript {
     const output = this.syncProcess('nexmo', [
       'app:create',
       applicationName,
-      'https://example.com/answer',
-      'https://example.com/event',
-      '--type=rtc',
+      '--capabilities=rtc',
+      '--rtc-event-url=http://example.com',
       '--keyfile=private.key'
     ])
 
